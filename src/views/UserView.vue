@@ -1,5 +1,13 @@
 <template>
-{{ $store.state.message }}
+
+<div>
+    Name: <input type="text" v-model="name">
+    title: <input type="text" v-model="job">
+    <button @click="updateTitle">Renew Data</button>
+    <h3>{{ $store.getters.title }}</h3>
+</div>
+
+{{ $store.state.name }}
 <br/>
 {{ stateMessage }}
   <h1>UserId: {{ $route.params.userId }}</h1>
@@ -14,7 +22,10 @@ import axios from 'axios'
 export default {
   data(){
     return{
-      userInfo:{}
+      userInfo:{},
+
+      name: '',
+      job: ''
     }
   },
   computed:{
@@ -37,6 +48,13 @@ export default {
     fetchUserInfo(id){
       axios.get(`https://jsonplaceholder.typicode.com/users/${id}`)
            .then(response => this.userInfo = response.data)
+    },
+
+    updateTitle(){
+        this.$store.commit('setTitle', {
+            name: this.name,
+            job: this.job
+        })
     }
   }
 }
